@@ -1,0 +1,34 @@
+Introduction
+This header file is purposed to test cost time of a block of C program.
+
+Usage
+1. Include this file in your C program, like this:
+#define DEBUG_FUNC_TIME
+#include <time_record_mt.h>
+2. Add macro in your function, like this:
+int func()
+{
+	DEFINE_TIME_RECORD()
+
+	...
+	START_TIME_RECORD()
+	...
+	END_TIME_RECORD()
+	...
+	END_TIME_RECORD()
+	...
+
+	return 0;
+}
+3. Call PRINT_TIME_RECORDS in the same .c file, usually when the work thread exits.
+4. Compile your program and run.
+You will find a .csv file named after your source file in the same directory with your exe.
+Open the .csv file, you will get the cost time and excute times of each blocks which are 
+between the START_TIME_RECORD and END_TIME_RECORD.
+
+Known limititions
+1. All these include and macros should be added in the same .c file.
+2. All the macros should be added in a common thread, so that calling PRINT_TIME_RECORDS 
+will print the cost time that has been computed by END_TIME_RECORD macro.
+3. As time record is realized usging hash table. Lines of source .c file should be less 
+than 2^16, and ENT_TIME_RECORD should ben called less than 60*2 times.
