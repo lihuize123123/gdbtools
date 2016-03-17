@@ -1,0 +1,35 @@
+Introduction
+This tool is purposed to check memory leaks in server program without losing the performance. It can be loaded in multi-thread environment.
+
+Compile environment
+It depends on libc.so version 2.12.
+I tested it on CentOS 6.4. CentOS 7.1 not tested.
+
+Compile steps
+Its source is only one file. So compile is simple, just make it. And you will find libapicap.so in the directory.
+1. make
+
+Usage
+1. Let's write a simple memory leaking C program file "test.c", like this:
+#include <stdlib.h>
+
+int main()
+{
+        void * buf = malloc(100);
+        return 0;
+}
+2. Compile "test.c", using the cmd bellow:
+gcc -g test.c -o test.out
+3. Run with libapicap.so, using the cmd bellow:
+LD_PRELOAD=./libapicap.so ./test.out
+You will find a mem_ops_xxx.log file in the directory. The log file reads like this:
+*************Memory leak*************
+memory leak [0x00000000014d1250, 0x00000000014d12b4] size 100, backtrace:
+                                #0 0x00000000004004d6 (./test.out::+0x4004d6)
+                                #1 0x00000033a741ecdd (/lib64/libc.so.6::__libc_start_main+0xfd)
+Total size: 100
+***********Memory leak end***********
+
+That's not all. There is a filter table on the head of the libapicap.c. 
+This can help you filter out the libs that you don't want to check memory leaks. 
+Hope you enjoy this simple tool.
