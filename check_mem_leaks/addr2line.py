@@ -32,7 +32,7 @@ def main():
             dst.write(src_line)
         src_line = src.readline()
 
-    p.communicate()
+    # p.communicate()
     p.terminate()
     src.close()
     dst.close()
